@@ -8,6 +8,7 @@ import java.util.Map;
 public class Contributor {
     private String name;
     private Map<String, Integer> skills;
+    private boolean isBusy;
 
     public Contributor(String name, Map<String, Integer> skills) {
         this.name = name;
@@ -43,5 +44,14 @@ public class Contributor {
             String[] skill = s.split(" ");
             this.skills.put(skill[0], Integer.parseInt(skill[1]));
         });
+    }
+
+
+    public boolean isBusy() {
+        return isBusy;
+    }
+
+    public void setBusy(boolean busy) {
+        isBusy = busy;
     }
 }

@@ -1,5 +1,6 @@
 package com.thales.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
@@ -9,6 +10,7 @@ public class Project {
     private int score;
     private int bestBefore;
     private List<Skill> roles;
+    private List<Contributor> contributorList = new ArrayList<>();
 
     public Project(String name, int duration, int score, int bestBefore, List<Skill> roles) {
         this.name = name;
@@ -57,4 +59,22 @@ public class Project {
     public void setRoles(List<Skill> roles) {
         this.roles = roles;
     }
+
+    public Double getPriority() {
+        return (double) (score / bestBefore);
+    }
+
+
+    public List<Contributor> getContributorList() {
+        return contributorList;
+    }
+
+    public void setContributorList(List<Contributor> contributorList) {
+        this.contributorList = contributorList;
+    }
+
+    public void addContributor(Contributor contributor) {
+        this.contributorList.add(contributor);
+    }
+
 }
