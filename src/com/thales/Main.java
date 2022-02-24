@@ -1,7 +1,6 @@
 package com.thales;
 
 import com.thales.models.Filename;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
