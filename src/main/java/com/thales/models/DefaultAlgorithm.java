@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class DefaultAlgorithm extends AbstractAlgorithm {
 	List<Contributor> contributorList = new ArrayList<>();
-	List<Project> projectList = new ArrayList<>();
+	ArrayList<Project> projectList = new ArrayList<>();
 
 	@Override
 	public void process(String filename) {
@@ -52,7 +52,7 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 			// Add him to list of projects
 			this.projectList.add(p);
 		}
-		this.runSimulation();
+		this.runSimulation2();
 		this.fh.write(this.getName() + '-' + filename, this.outputContent());
 	}
 
@@ -72,7 +72,7 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 		PlanningManager planningManager = new PlanningManager(this.contributorList);
 		for(Project project : this.projectList) {
 			for(Skill skill : project.getRoles()) {
-				Contributor contributor = planningManager.findBestContributor(skill.getName(), skill.getLevel());
+				Contributor contributor = planningManager.findBestContributor(skill.getName(), skill.getLevel(), project);
 				if (contributor != null) {
 					project.addContributor(contributor);
 				}
@@ -83,6 +83,43 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 			planningManager.freeAll();
 		}
 	}
+
+	private void runSimulation2() {
+		this.projectList.sort(Comparator.comparing(Project::getPriority, Comparator.reverseOrder()));
+		PlanningManager planningManager = new PlanningManager(this.contributorList);
+		ArrayList<Project> clonedList = (ArrayList<Project>) this.projectList.clone();
+		boolean noChange = true;
+		while(clonedList.size() != 0 && noChange) {
+			noChange = false;
+			for(int i = 0; i < clonedList.size(); i++) {
+				Project cur = clonedList.get(i);
+				if(cur.isStarted()) {
+					cur.setDuration(cur.getDuration()-1);
+					noChange = true;
+				}
+				if(cur.getDuration() == 0) {
+					clonedList.remove(i);
+					i--;
+					cur.getContributorList().forEach(c -> c.setBusy(false));
+					noChange = true;
+				}
+				if(!cur.isStarted()) {
+					for(Skill skill : cur.getRoles()) {
+						Contributor contributor = planningManager.findBestContributor(skill.getName(), skill.getLevel(), cur);
+						if (contributor != null) {
+							cur.addContributor(contributor);
+						}
+					}
+					if (cur.getRoles().size() == cur.getContributorList().size() && !cur.isStarted()) {
+						cur.doProject();
+						noChange = true;
+					} else {
+						cur.setContributorList(new ArrayList<>());
+					}
+				}
+			}
+		}
+    }
 
 
 	private List<String> restitute(String firstLine) {

@@ -10,14 +10,16 @@ public class PlanningManager {
 
     private List<Contributor> contributorList;
 
-    public Contributor findBestContributor(String role, int level) {
+    public Contributor findBestContributor(String role, int level, Project project) {
+        boolean mentor = project.getContributorList().stream().anyMatch(c -> c.getSkills().get(role) != null && c.getSkills().get(role) > level);
+        Contributor contrib = null;
         for(Contributor c : contributorList) {
-            if (!c.isBusy() && c.getSkills().containsKey(role) && c.getSkills().get(role) >= level) {
-                c.setBusy(true);
-                return c;
+            if (!c.isBusy() && c.getSkills().containsKey(role) && c.getSkills().get(role) >= (mentor ? level-1 : level)) {
+                //c.setBusy(true);
+                contrib = contrib == null || contrib.getSkills().get(role) > c.getSkills().get(role) ? c : contrib;
             }
         }
-        return null;
+        return contrib;
     }
 
     public void freeAll() {

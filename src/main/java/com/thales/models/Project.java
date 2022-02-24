@@ -11,6 +11,7 @@ public class Project {
     private int bestBefore;
     private List<Skill> roles;
     private List<Contributor> contributorList = new ArrayList<>();
+    private boolean isStarted = false;
 
     public Project(String name, int duration, int score, int bestBefore, List<Skill> roles) {
         this.name = name;
@@ -32,6 +33,15 @@ public class Project {
             }
             this.contributorList.get(i).setBusy(true);
         }
+        start();
+    }
+
+    public boolean isStarted() {
+        return this.isStarted;
+    }
+
+    public void start() {
+        this.isStarted = true;
     }
 
     public String getName() {
