@@ -5,6 +5,7 @@ import com.thales.interfaces.AbstractAlgorithm;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultAlgorithm extends AbstractAlgorithm {
 	List<Contributor> contributorList = new ArrayList<>();
@@ -53,7 +54,17 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 			this.projectList.add(p);
 		}
 		this.runSimulation();
-		this.fh.write(this.getName() + '-' + filename, this.restitute(firstLine[0] + " " + firstLine[1]));
+		this.fh.write(this.getName() + '-' + filename, this.outputContent());
+	}
+
+	private List<String> outputContent() {
+		List<String> res = new ArrayList<>();
+		res.add(String.valueOf(projectList.size()));
+		this.projectList.stream().filter(p -> p.getContributorList().size() == p.getRoles().size()).forEach(p -> {
+			res.add(p.getName());
+			res.add(p.getContributorList().stream().map(c -> c.getName()).collect(Collectors.joining(" ")));
+		});
+		return res;
 	}
 
 	private void runSimulation() {
