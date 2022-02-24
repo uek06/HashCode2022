@@ -48,7 +48,6 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 			int nbRoles = Integer.parseInt(initLine[4]);
 			// set n lines of roles as roles of project p
 			List<String> roles = this.fh.readLines(nbRoles);
-			System.out.println(roles);
 			p.setRoles(roles);
 			// Add him to list of projects
 			this.projectList.add(p);
@@ -59,8 +58,9 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 
 	private List<String> outputContent() {
 		List<String> res = new ArrayList<>();
-		res.add(String.valueOf(projectList.size()));
-		this.projectList.stream().filter(p -> p.getContributorList().size() == p.getRoles().size()).forEach(p -> {
+		List<Project> doneProjects = this.projectList.stream().filter(p -> p.getContributorList().size() == p.getRoles().size()).collect(Collectors.toList());
+		res.add(String.valueOf(doneProjects.size()));
+		doneProjects.forEach(p -> {
 			res.add(p.getName());
 			res.add(p.getContributorList().stream().map(c -> c.getName()).collect(Collectors.joining(" ")));
 		});

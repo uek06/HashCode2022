@@ -20,7 +20,7 @@ public class FileHandler implements Reader, Writer {
         try {
             PrintWriter out = new PrintWriter("resources/" + filename + ".out");
             for(String line : content) {
-                out.write(line);
+                out.write(line + '\n');
             }
             out.close();
             input.close();
