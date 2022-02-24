@@ -11,7 +11,7 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 		this.fh.readAll();
 		this.fh.write(this.getName() + '-' + filename, null);
 	}
-
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
