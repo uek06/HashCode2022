@@ -46,6 +46,10 @@ public class Contributor {
         });
     }
 
+    public void upSkill(String skill) {
+        this.skills.put(skill, this.skills.get(skill) + 1);
+    }
+
     public boolean isBusy() {
         return isBusy;
     }

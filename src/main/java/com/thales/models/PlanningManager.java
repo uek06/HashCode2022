@@ -14,6 +14,9 @@ public class PlanningManager {
         for(Contributor c : contributorList) {
             if (!c.isBusy() && c.getSkills().containsKey(role) && c.getSkills().get(role) >= level) {
                 c.setBusy(true);
+                if (level == c.getSkills().get(role)) {
+                    c.upSkill(role);
+                }
                 return c;
             }
         }
