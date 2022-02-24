@@ -46,12 +46,14 @@ public class Contributor {
         });
     }
 
-
     public boolean isBusy() {
         return isBusy;
     }
 
     public void setBusy(boolean busy) {
         isBusy = busy;
+    }
+    public String toString() {
+        return this.name + "\n";
     }
 }

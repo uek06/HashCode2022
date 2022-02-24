@@ -20,6 +20,10 @@ public class Project {
         this.roles = roles;
     }
 
+    public Project() {
+        roles = new ArrayList<>();
+    }
+
     public String getName() {
         return name;
     }
@@ -56,8 +60,19 @@ public class Project {
         return roles;
     }
 
-    public void setRoles(List<Skill> roles) {
-        this.roles = roles;
+//    public void setRoles(List<Skill> roles) {
+//        this.roles = roles;
+//    }
+
+    public void setRoles(List<String> roles) {
+        // roles are a list of string of value something like "html 7"
+        roles.forEach(r -> {
+            this.roles.add(new Skill(r.split(" ")));
+        });
+    }
+
+    public String toString() {
+        return this.name + " " + this.duration + " " + this.score + " " + this.bestBefore + " " + this.roles.size() + "\n";
     }
 
     public Double getPriority() {
