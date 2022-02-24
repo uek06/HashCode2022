@@ -77,6 +77,9 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 					project.addContributor(contributor);
 				}
 			}
+			if (project.getRoles().size() == project.getContributorList().size()) {
+				project.doProject();
+			}
 			planningManager.freeAll();
 		}
 	}

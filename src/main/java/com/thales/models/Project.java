@@ -24,6 +24,16 @@ public class Project {
         roles = new ArrayList<>();
     }
 
+    public void doProject() {
+        for (int i = 0; i < this.contributorList.size(); i++) {
+            Skill skill = this.roles.get(i);
+            if (skill.getLevel() == this.contributorList.get(i).getSkills().get(skill.getName())) {
+                this.contributorList.get(i).upSkill(skill.getName());
+            }
+            this.contributorList.get(i).setBusy(true);
+        }
+    }
+
     public String getName() {
         return name;
     }
