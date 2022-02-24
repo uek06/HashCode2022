@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 public class DefaultAlgorithm extends AbstractAlgorithm {
 	List<Contributor> contributorList = new ArrayList<>();
 	List<Project> projectList = new ArrayList<>();
+	List<Project> done = new ArrayList<>();
+	List<Project> onHold = new ArrayList<>();
 
 	@Override
 	public void process(String filename) {
@@ -58,9 +60,8 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 
 	private List<String> outputContent() {
 		List<String> res = new ArrayList<>();
-		List<Project> doneProjects = this.projectList.stream().filter(p -> p.getContributorList().size() == p.getRoles().size()).collect(Collectors.toList());
-		res.add(String.valueOf(doneProjects.size()));
-		doneProjects.forEach(p -> {
+		res.add(String.valueOf(this.done.size()));
+		this.done.forEach(p -> {
 			res.add(p.getName());
 			res.add(p.getContributorList().stream().map(c -> c.getName()).collect(Collectors.joining(" ")));
 		});
@@ -70,16 +71,30 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 	private void runSimulation() {
 		this.projectList.sort(Comparator.comparing(Project::getPriority, Comparator.reverseOrder()));
 		PlanningManager planningManager = new PlanningManager(this.contributorList);
-		for(Project project : this.projectList) {
+		while (!this.projectList.isEmpty()) {
+			Project project = this.projectList.get(0);
 			for(Skill skill : project.getRoles()) {
 				Contributor contributor = planningManager.findBestContributor(skill.getName(), skill.getLevel());
 				if (contributor != null) {
 					project.addContributor(contributor);
 				}
 			}
+			// Projet staffé
 			if (project.getRoles().size() == project.getContributorList().size()) {
 				project.doProject();
+				List<Project> tmp = new ArrayList<>(this.projectList);
+				this.projectList.clear();
+				this.projectList.addAll(this.onHold);
+				this.projectList.addAll(tmp);
+				this.onHold.clear();
+				this.done.add(project);
+				String s = "";
+			// Projet non staffé
+			} else {
+				this.onHold.add(project);
+				String s = "";
 			}
+			this.projectList.remove(project);
 			planningManager.freeAll();
 		}
 	}
