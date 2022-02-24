@@ -62,7 +62,9 @@ public class DefaultAlgorithm extends AbstractAlgorithm {
 		for(Project project : this.projectList) {
 			for(Skill skill : project.getRoles()) {
 				Contributor contributor = planningManager.findBestContributor(skill.getName(), skill.getLevel());
-				project.addContributor(contributor);
+				if (contributor != null) {
+					project.addContributor(contributor);
+				}
 			}
 			planningManager.freeAll();
 		}
