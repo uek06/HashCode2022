@@ -1,5 +1,6 @@
 package com.thales;
 
+import com.thales.models.DefaultAlgorithm;
 import com.thales.models.Filename;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         for (String fileName : fileNames) {
-            process(fileName);
+            new DefaultAlgorithm().process(fileName);
         }
     }
 

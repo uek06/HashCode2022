@@ -44,4 +44,8 @@ public class Contributor {
             this.skills.put(skill[0], Integer.parseInt(skill[1]));
         });
     }
+
+    public String toString() {
+        return this.name + "\n";
+    }
 }

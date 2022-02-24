@@ -29,4 +29,8 @@ public class Skill {
     public void setLevel(int level) {
         this.level = level;
     }
+
+    public String toString() {
+        return this.name + " " + this.level + "\n";
+    }
 }

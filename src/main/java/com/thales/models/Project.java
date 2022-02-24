@@ -1,5 +1,6 @@
 package com.thales.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
@@ -16,6 +17,10 @@ public class Project {
         this.score = score;
         this.bestBefore = bestBefore;
         this.roles = roles;
+    }
+
+    public Project() {
+        roles = new ArrayList<>();
     }
 
     public String getName() {
@@ -54,7 +59,18 @@ public class Project {
         return roles;
     }
 
-    public void setRoles(List<Skill> roles) {
-        this.roles = roles;
+//    public void setRoles(List<Skill> roles) {
+//        this.roles = roles;
+//    }
+
+    public void setRoles(List<String> roles) {
+        // roles are a list of string of value something like "html 7"
+        roles.forEach(r -> {
+            this.roles.add(new Skill(r.split(" ")));
+        });
+    }
+
+    public String toString() {
+        return this.name + " " + this.duration + " " + this.score + " " + this.bestBefore + " " + this.roles.size() + "\n";
     }
 }
